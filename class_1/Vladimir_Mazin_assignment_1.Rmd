@@ -30,7 +30,7 @@ Functions for generating data and conducting analysis:
 create_sample = function(n) {
   l <- rep(0, 1000)
   for (i in 1:1000) {
-    l[i] <- mean(sample(dt_values, size = n))
+    l[i] <- mean(rt(sample(x, size = n), df=degf))
   }
   l
 }
