@@ -1,0 +1,64 @@
+---
+title: "Central Limit Theorem"
+author: "Vladimir Mazin"
+output: html_document
+---
+
+My favorite distribution is Student's t-distribution: $$F\left(x\right)=St\left(x, \nu\right)$$
+For this assignment I'm using parameter values $$\nu=8$$
+
+Let's take a sample of size 1000 from that distribution:
+```{r}
+x <- seq(-4, 4, length=1000)
+degf <- 8
+dt_values = rt(x, df=degf)
+```
+
+Here is the histogram of the sample:
+```{r}
+hist(dt_values)
+```
+
+Here is a smooth sample estimate of the density, and the actual population density for comparison:
+
+Central limit theorem states that the distribution of a sample mean gets normal as sample size increases. Let's test that. For several values of $n$ we'll take samples of size $n$ from our distribution 1000 times, and calculate a sample mean for each sample. We'll use histograms and kernel density estimates to compare the distribution of those sample means to the normal approximation suggested by the central limit theorem. 
+
+CLT states that sample mean has the same expectation as the original variable, and the variance $\mathbb{D}\bar{X}_n=\frac{\mathbb{D}X}{n} = \frac{\frac{\nu}{\nu - 2}}{n}$
+
+Functions for generating data and conducting analysis:
+```{r}
+create_sample = function(n) {
+  l <- rep(0, 1000)
+  for (i in 1:1000) {
+    l[i] <- mean(sample(dt_values, size = n))
+  }
+  l
+}
+
+run_analysis = function(n) {
+  sample_means <- create_sample(n)
+  hist(sample_means)
+  plot(density(sample_means), type="l",col="red")
+  x_CLT <- dnorm(x, mean = 0, sd = sqrt((degf / (degf - 2)) / n))
+  lines(x, x_CLT, col = "green")
+}
+```
+
+For n=5:
+```{r}
+#plot of the histogram, kernel density estimate and a normal approximation from CLT to compare 
+n <- 5
+run_analysis(n)
+```
+
+For n=10:
+```{r}
+n <- 10
+run_analysis(n)
+```
+
+For n=50:
+```{r}
+n <- 50
+run_analysis(n)
+```
