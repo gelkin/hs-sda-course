@@ -9,9 +9,10 @@ For this assignment I'm using parameter values $$\nu=8$$
 
 Let's take a sample of size 1000 from that distribution:
 ```{r}
-x <- seq(-4, 4, length=1000)
+length <- 1000
+x <- seq(-4, 4, length=length)
 degf <- 8
-dt_values = rt(x, df=degf)
+dt_values = rt(length, df=degf)
 ```
 
 Here is the histogram of the sample:
@@ -30,7 +31,7 @@ Functions for generating data and conducting analysis:
 create_sample = function(n) {
   l <- rep(0, 1000)
   for (i in 1:1000) {
-    l[i] <- mean(rt(sample(x, size = n), df=degf))
+    l[i] <- mean(rt(n, df=degf))
   }
   l
 }
